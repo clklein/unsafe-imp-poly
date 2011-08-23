@@ -11,17 +11,12 @@ public class Lam extends Expr {
    }
 
    public ConstrainedType constrainedType(FinMap<Var, Schema> env,
-                                          Constraints constrs) {
+    Constraints constrs) throws NoType {
       Type domTy = TypeVar.fresh();
       Schema paramSchema = new Schema(null, domTy);
       ConstrainedType CT = body.constrainedType(env.extend(param, paramSchema),
        constrs);
-      if (CT != null) {
-         return new ConstrainedType(CT.constraints, 
-          new FunType(domTy, CT.type));
-      } else {
-         return null;
-      }
+      return new ConstrainedType(CT.constraints, new FunType(domTy, CT.type));
    }
 
    public Val eval(FinMap<Var, Val> env) {

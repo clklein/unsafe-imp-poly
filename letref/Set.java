@@ -11,24 +11,12 @@ public class Set extends Expr {
    }
 
    public ConstrainedType constrainedType(FinMap<Var, Schema> env,
-                                          Constraints initConstrs) {
+    Constraints initConstrs) throws NoType {
       ConstrainedType lhsCT = lhs.constrainedType(env, initConstrs);
-      if (lhsCT != null) {
-         ConstrainedType rhsCT = rhs.constrainedType(env, lhsCT.constraints);
-         if (rhsCT != null) {
-            Constraints constrs = rhsCT.constraints.addEquation(lhsCT.type,
-             new RefType(rhsCT.type));
-            if (constrs != null) {
-               return new ConstrainedType(constrs, new IntType());
-            } else {
-               return null;
-            }
-         } else {
-            return null;
-         }
-      } else {
-         return null;
-      }
+      ConstrainedType rhsCT = rhs.constrainedType(env, lhsCT.constraints);
+      Constraints constrs = rhsCT.constraints.addEquation(lhsCT.type,
+       new RefType(rhsCT.type));
+      return new ConstrainedType(constrs, new IntType());
    }
 
    public Val eval(FinMap<Var, Val> env) {

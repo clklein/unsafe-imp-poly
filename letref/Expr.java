@@ -4,7 +4,7 @@ import java.util.HashSet;
 
 public abstract class Expr {
    public abstract ConstrainedType constrainedType(FinMap<Var, Schema> env,
-    Constraints constrs);
+    Constraints constrs) throws NoType;
    public abstract Val eval(FinMap<Var, Val> env);
    public abstract boolean sharingOK(HashSet<Expr> seen);
    public abstract String toString();
@@ -12,10 +12,10 @@ public abstract class Expr {
    public Schema typeOf() {
       TypeVar.reset();
       FinMap<Var, Schema> topLevEnv = new FinMap<Var, Schema>();
-      ConstrainedType CT = constrainedType(topLevEnv, new Constraints(null));
-      if (CT != null) {
+      try {
+         ConstrainedType CT = constrainedType(topLevEnv, new Constraints(null));
          return CT.constraints.generalize(topLevEnv, CT.type);
-      } else {
+      } catch (NoType exn) {
          return null;
       }
    }

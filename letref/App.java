@@ -11,26 +11,13 @@ public class App extends Expr {
    }
 
    public ConstrainedType constrainedType(FinMap<Var, Schema> env,
-                                          Constraints initConstrs) {
+    Constraints initConstrs) throws NoType {
       ConstrainedType ratorCT = rator.constrainedType(env, initConstrs);
-      if (ratorCT != null) {
-         ConstrainedType randCT = rand.constrainedType(env, 
-          ratorCT.constraints);
-         if (randCT != null) {
-            Type resultType = TypeVar.fresh();
-            Constraints constrs = randCT.constraints.addEquation(ratorCT.type, 
-             new FunType(randCT.type, resultType));
-            if (constrs != null) {
-               return new ConstrainedType(constrs, resultType);
-            } else {
-               return null;
-            }
-         } else {
-            return null;
-         }
-      } else {
-         return null;
-      }
+      ConstrainedType randCT = rand.constrainedType(env, ratorCT.constraints);
+      Type resultType = TypeVar.fresh();
+      Constraints constrs = randCT.constraints.addEquation(ratorCT.type, 
+       new FunType(randCT.type, resultType));
+      return new ConstrainedType(constrs, resultType);
    }
 
    public Val eval(FinMap<Var, Val> env) {

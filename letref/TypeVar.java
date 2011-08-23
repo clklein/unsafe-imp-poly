@@ -18,22 +18,18 @@ public class TypeVar implements Type {
       return List.cons(this, null);
    }
 
-   public Constraints unify(Type t, List<Equation> es) {
+   public Constraints unify(Type t, List<Equation> es) throws NoType {
       if (List.member(this, t.typeVars())) {
-         return null;
+         throw new NoType();
       } else {
          Constraints rest = Constraints.unify(
           Constraints.subst(this, t, es));
-         if (rest != null) {
-            return new Constraints(List.cons(new Assignment(this, t), 
-             rest.assignments));
-         } else {
-            return null;
-         }
+         return new Constraints(List.cons(new Assignment(this, t), 
+          rest.assignments));
       }
    }
 
-   public Constraints unifyVar(Type t, List<Equation> es) {
+   public Constraints unifyVar(Type t, List<Equation> es) throws NoType {
       return unify(t, es);
    }
 

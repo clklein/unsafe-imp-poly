@@ -9,20 +9,12 @@ public class Deref extends Expr {
    }
 
    public ConstrainedType constrainedType(FinMap<Var, Schema> env,
-                                          Constraints initConstrs) {
+    Constraints initConstrs) throws NoType {
       ConstrainedType bodyCT = body.constrainedType(env, initConstrs);
-      if (bodyCT != null) {
-         Type containedType = TypeVar.fresh();
-         Constraints constrs = bodyCT.constraints.addEquation(bodyCT.type,
-          new RefType(containedType));
-         if (constrs != null) {
-            return new ConstrainedType(constrs, containedType);
-         } else {
-            return null;
-         }
-      } else {
-         return null;
-      }
+      Type containedType = TypeVar.fresh();
+      Constraints constrs = bodyCT.constraints.addEquation(bodyCT.type,
+       new RefType(containedType));
+      return new ConstrainedType(constrs, containedType);
    }
 
    public Val eval(FinMap<Var, Val> env) {

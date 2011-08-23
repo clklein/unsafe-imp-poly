@@ -9,14 +9,9 @@ public class Ref extends Expr {
    }
 
    public ConstrainedType constrainedType(FinMap<Var, Schema> env,
-                                          Constraints initConstrs) {
+    Constraints initConstrs) throws NoType {
       ConstrainedType bodyCT = body.constrainedType(env, initConstrs);
-      if (bodyCT != null) {
-         return new ConstrainedType(bodyCT.constraints, 
-          new RefType(bodyCT.type));
-      } else {
-         return null;
-      }
+      return new ConstrainedType(bodyCT.constraints, new RefType(bodyCT.type));
    }
 
    public Val eval(FinMap<Var, Val> env) {

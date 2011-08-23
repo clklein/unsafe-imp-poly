@@ -9,7 +9,7 @@ public class IntType implements Type {
       return null;
    }
 
-   public Constraints unify(Type t, List<Equation> es) {
+   public Constraints unify(Type t, List<Equation> es) throws NoType {
       if (t.getClass().equals(IntType.class)) {
          return Constraints.unify(es);
       } else {
@@ -17,8 +17,8 @@ public class IntType implements Type {
       }
    }
 
-   public Constraints unifyVar(Type t, List<Equation> es) {
-      return null;
+   public Constraints unifyVar(Type t, List<Equation> es) throws NoType {
+      throw new NoType();
    }
 
    public String toString() {

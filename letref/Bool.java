@@ -9,7 +9,7 @@ public class Bool extends Expr {
    }
 
    public ConstrainedType constrainedType(FinMap<Var, Schema> env,
-                                          Constraints constrs) {
+    Constraints constrs) throws NoType {
       return new ConstrainedType(constrs, new BoolType());
    }
 

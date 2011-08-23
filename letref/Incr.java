@@ -9,19 +9,11 @@ public class Incr extends Expr {
    }
 
    public ConstrainedType constrainedType(FinMap<Var, Schema> env,
-                                          Constraints initConstrs) {
+    Constraints initConstrs) throws NoType {
       ConstrainedType bodyCT = body.constrainedType(env, initConstrs);
-      if (bodyCT != null) {
-         Constraints constrs = bodyCT.constraints.addEquation(new IntType(),
-          bodyCT.type);
-         if (constrs != null) {
-            return new ConstrainedType(constrs, new IntType());
-         } else {
-            return null;
-         }
-      } else {
-         return null;
-      }
+      Constraints constrs = bodyCT.constraints.addEquation(new IntType(),
+       bodyCT.type);
+      return new ConstrainedType(constrs, new IntType());
    }
 
    public Val eval(FinMap<Var, Val> env) {

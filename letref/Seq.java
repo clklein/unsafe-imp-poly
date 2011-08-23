@@ -11,13 +11,9 @@ public class Seq extends Expr {
    }
 
    public ConstrainedType constrainedType(FinMap<Var, Schema> env,
-                                          Constraints initConstrs) {
+    Constraints initConstrs) throws NoType {
       ConstrainedType firstCT = first.constrainedType(env, initConstrs);
-      if (firstCT != null) {
-         return second.constrainedType(env, firstCT.constraints);
-      } else {
-         return null;
-      }
+      return second.constrainedType(env, firstCT.constraints);
    }
 
    public Val eval(FinMap<Var, Val> env) {

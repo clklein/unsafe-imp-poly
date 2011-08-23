@@ -6,7 +6,7 @@ public class Constraints {
       this.assignments = assignments;
    }
 
-   public Constraints addEquation(Type t, Type u) {
+   public Constraints addEquation(Type t, Type u) throws NoType {
       return t.unify(u, Assignment.asEquations(assignments));
    }
 
@@ -22,7 +22,7 @@ public class Constraints {
       return new Schema(generalizable, subd);
    }
 
-   public static Constraints unify(List<Equation> equations) {
+   public static Constraints unify(List<Equation> equations) throws NoType {
       if (equations == null) {
          return new Constraints(null);
       } else {

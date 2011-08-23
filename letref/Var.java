@@ -9,12 +9,12 @@ public class Var extends Expr implements Comparable<Var> {
    }
 
    public ConstrainedType constrainedType(FinMap<Var, Schema> env,
-                                          Constraints constrs) {
+    Constraints constrs) throws NoType {
       if (env.maps(this)) {
          Type instantiatedType = env.lookup(this).freshInstance();
          return new ConstrainedType(constrs, instantiatedType);
       } else {
-         return null;
+         throw new NoType();
       }
    }
 

@@ -13,15 +13,11 @@ public class Let extends Expr {
    }
 
    public ConstrainedType constrainedType(FinMap<Var, Schema> env,
-                                          Constraints initConstrs) {
+    Constraints initConstrs) throws NoType {
       ConstrainedType rhsCT = rhs.constrainedType(env, initConstrs);
-      if (rhsCT != null) {
-         Schema rhsSchema = rhsCT.constraints.generalize(env, rhsCT.type);
-         return body.constrainedType(env.extend(lhs, rhsSchema), 
-          rhsCT.constraints);
-      } else {
-         return null;
-      }
+      Schema rhsSchema = rhsCT.constraints.generalize(env, rhsCT.type);
+      return body.constrainedType(env.extend(lhs, rhsSchema), 
+       rhsCT.constraints);
    }
 
    public Val eval(FinMap<Var, Val> env) {

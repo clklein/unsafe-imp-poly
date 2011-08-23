@@ -14,7 +14,7 @@ public class RefType implements Type {
       return contents.typeVars();
    }
 
-   public Constraints unify(Type t, List<Equation> es) {
+   public Constraints unify(Type t, List<Equation> es) throws NoType {
       if (t.getClass().equals(RefType.class)) {
          return contents.unify(((RefType) t).contents, es);
       } else {
@@ -22,8 +22,8 @@ public class RefType implements Type {
       }
    }
 
-   public Constraints unifyVar(Type t, List<Equation> es) {
-      return null;
+   public Constraints unifyVar(Type t, List<Equation> es) throws NoType {
+      throw new NoType();
    }
 
    public String toString() {

@@ -18,23 +18,19 @@ public class FunType implements Type {
       return List.append(domain.typeVars(), List.removeAll(codomTVs, domTVs));
    }
 
-   public Constraints unify(Type t, List<Equation> es) {
+   public Constraints unify(Type t, List<Equation> es) throws NoType {
       if (t.getClass().equals(FunType.class)) {
          FunType f = (FunType)t;
          Constraints unifiedDom = domain.unify(f.domain, es);
-         if (unifiedDom != null) {
-            return codomain.unify(f.codomain, 
-             Assignment.asEquations(unifiedDom.assignments));
-         } else {
-            return null;
-         }
+         return codomain.unify(f.codomain, 
+          Assignment.asEquations(unifiedDom.assignments));
       } else {
          return t.unifyVar(this, es);
       }
    }
 
-   public Constraints unifyVar(Type t, List<Equation> es) {
-      return null;
+   public Constraints unifyVar(Type t, List<Equation> es) throws NoType {
+      throw new NoType();
    }
 
    public String toString() {
