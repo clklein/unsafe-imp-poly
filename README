@@ -1,0 +1,41 @@
+This repository contains an attempt to find the unsoundness motivating the 
+value restriction [1] automatically, using the Korat test generation tool [2].
+
+The `letref' directory contains a Java interpreter for an unsound language with
+let-polymorphism and ref cells.
+
+The `testgen' directory contains a Korat configuration that searches for the
+bug. To run it:
+
+1. Download Korat from this URL:
+
+   http://sourceforge.net/projects/korat/files/korat/korat-1.0/korat-all-1.0.zip
+
+2. Unzip it into this directory.
+
+3. Compile everything:
+
+   javac -cp korat/korat.jar:. testgen/*.java letref/*.java
+
+4. Invoke Korat:
+
+   java -cp korat/korat.jar:. korat.Korat \
+    --class testgen.TestInput \
+    --args 2,1,1 \
+    --progress 1000000 \
+    --listeners testgen.TestExec
+
+The three numeric arguments control the space of test inputs that Korat will
+explore. The first argument controls how many objects of each Expr class that
+Korat can use in constructing each test expression. Korat usually allows an
+object to appear multiple times within a test input's object graph, but the
+testgen.TestInput configuration excludes most such tests -- only objects
+representing variables, integers, and booleans may appear multiple times. The
+second and third arguments control the number of distinct variable and integer
+objects that appear in a test input.
+
+Running with the above arguments *should* find the bug, but I haven't waited
+long enough to confirm.
+
+[1] http://www.ccs.neu.edu/scheme/pubs/lasc95-w.ps.gz
+[2] http://korat.sourceforge.net/
