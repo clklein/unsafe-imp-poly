@@ -21,21 +21,34 @@ bug. To run it:
 
    java -cp korat/korat.jar:. korat.Korat \
     --class testgen.TestInput \
-    --args 2,1,1 \
+    --args 1,1,letref.Lam:2:1 \
     --progress 1000000 \
     --listeners testgen.TestExec
 
-The three numeric arguments control the space of test inputs that Korat will
-explore. The first argument controls how many objects of each Expr class that
-Korat can use in constructing each test expression. Korat usually allows an
-object to appear multiple times within a test input's object graph, but the
-testgen.TestInput configuration excludes most such tests -- only objects
-representing variables, integers, and booleans may appear multiple times. The
-second and third arguments control the number of distinct variable and integer
-objects that appear in a test input.
+The three comma-delimited --args arguments control the space of test inputs 
+that Korat will explore. The first and second arguments respectively bound the
+number of distinct variables and integers that Korat may use to construct each 
+test input. The third argument limits the number of objects of each of the 
+other Expr classes, except Bool, which may be used freely. These objects 
+appear at most once in the test input's object graph. For example, the 
+expression:
 
-Running with the above arguments *should* find the bug, but I haven't waited
-long enough to confirm.
+   ((lam (x) x) (lam (x) x))
+
+requires two Lam objects. The third argument takes one of two forms:
+
+   1. a natural number applying to all of the other Expr implementations,
+
+   2. a string of the form letref.[C]:[c]:[n], configuring the search space to 
+   include tests inputs comprising [c] objects of class [C] and [n] objects of 
+   each of the other Expr implementations.
+     
+Running with the sample arguments above finds this bug-revealing expression:
+
+((! (let (x0 (ref (lam (x0) 0)))
+      (seq (x0 := (lam (x0) (+1 x0)))
+           x0)))
+ true)
 
 [1] http://www.ccs.neu.edu/scheme/pubs/lasc95-w.ps.gz
 [2] http://korat.sourceforge.net/
