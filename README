@@ -50,5 +50,7 @@ Running with the sample arguments above finds this bug-revealing expression:
            x0)))
  true)
 
+It takes just under two hours on my machine.
+
 [1] http://www.ccs.neu.edu/scheme/pubs/lasc95-w.ps.gz
 [2] http://korat.sourceforge.net/
